@@ -1,0 +1,25 @@
+{
+  "Amazonia": {
+    "Madeireiros": "Timber species detection for Amazon biome.",
+    "Nao madeireiros": "Non-timber forest products detection in Amazon.",
+    "Palmeiras": "Detection of palm species in Amazon.",
+    "Ecologico": "Ecological indicators detection in Amazon.",
+    "Acai": "Açaí (Euterpe spp.) detection in Amazon.",
+    "Castanheira": "Castanheira (Bertholletia excelsa) detection in Amazon.",
+    "Invasora": "Detection of invasive species in Amazon."
+  },
+  "Cerrado": {
+    "Carvao": "Charcoal/woody biomass targeting for Cerrado.",
+    "Nao madeireiros": "Non-timber products detection in Cerrado.",
+    "Palmeiras": "Palm detection in Cerrado."
+  },
+  "Mata Atlantica": {
+    "Madeireiro": "Timber species detection in Atlantic Forest.",
+    "Nao madeireiro": "Non-timber products detection in Atlantic Forest.",
+    "Palmeiras": "Palm detection in Atlantic Forest.",
+    "Araucaria": "Araucaria detection in southern Atlantic Forest range."
+  },
+  "Caatinga": {},
+  "Pantanal": {},
+  "Pampa": {}
+}
