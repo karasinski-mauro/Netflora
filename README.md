@@ -34,6 +34,24 @@ O **Netflora** automatiza a etapa de inventário florestal a partir de ortomosai
 
 > Dica: para reprodutibilidade, mantenha os modelos em `common/weights/` (ou no diretório indicado nas configurações do plugin).
 
+> ## Dependências Python 
+
+O Netflora usa bibliotecas Python para inferência e processamento. Dependendo do modo (ONNX ou PyTorch), você pode precisar instalar:
+
+- `numpy` (obrigatório)
+- `onnxruntime` (para modelos `.onnx`)  
+  *(ou `onnxruntime-gpu` se você for usar GPU e tiver CUDA compatível)*
+- `torch` e `ultralytics` (se usar modo PyTorch / `.pt`)
+- Outras dependências podem ser necessárias conforme o fluxo (ex.: leitura de raster, geração de relatório).
+
+### Instalação via OSGeo4W Shell (Windows)
+Abra o **OSGeo4W Shell** do QGIS e rode:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install --upgrade numpy onnxruntime
+
+
 ---
 
 ## Instalação
