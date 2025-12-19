@@ -50,9 +50,7 @@ Abra o **OSGeo4W Shell** do QGIS e rode:
 ```bash
 python -m pip install --upgrade pip
 python -m pip install --upgrade numpy onnxruntime
-
-
----
+´´´
 
 ## Instalação
 
@@ -65,5 +63,7 @@ python -m pip install --upgrade numpy onnxruntime
 
 ### Opção B — Instalar como plugin local (desenvolvimento)
 1. Clone o repositório:
+
    ```bash
    git clone https://github.com/karasinski-mauro/Netflora.git
+   ´´´
