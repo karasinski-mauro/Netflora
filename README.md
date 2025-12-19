@@ -1,7 +1,9 @@
 # Netflora
-Plugin QGIS para detecção de árvores e palmeiras em ortomosaicos usando YOLO (PyTorch/ONNX), gerando camadas vetoriais e relatório HTML.
+Plugin QGIS para detecção de árvores e palmeiras em ortomosaicos usando YOLO (PyTorch/ONNX), gerando camadas vetoriais (.shp) e relatório.
 
 ---
+
+<img src="https://github.com/NetFlora/Netflora/blob/main/inference/images/detection.gif" alt="Demonstração do Projeto" width="1000"/>
 
 ## Visão geral
 O **Netflora** automatiza a etapa de inventário florestal a partir de ortomosaicos (GeoTIFF) e modelos YOLO. O plugin:
@@ -11,7 +13,17 @@ O **Netflora** automatiza a etapa de inventário florestal a partir de ortomosai
 - gera **relatório HTML** com métricas e gráficos.
 
 > **Entrada:** ortomosaico georreferenciado (ex.: `.tif/.tiff`)  
-> **Saída:** camadas vetoriais (Shapefile/GeoPackage), CSVs e relatório HTML
+> **Saída:** camadas vetoriais (Shapefile/GeoPackage), CSVs e relatório
+
+<div style="display: flex;">
+
+ <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true" width="200" alt="Netflora Logo">
+
+  <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true" width="200" alt="Embrapa Acre Logo">
+    
+   <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true" width="200" alt="JBS Fund Logo">
+
+</div>
 
 ---
 
