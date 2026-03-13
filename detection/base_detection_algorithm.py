@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 import os
 import re
 import unicodedata
@@ -22,9 +23,21 @@ from ..common.preprocessing import run_preprocessing
 from ..common.inference import run_detection
 
 DOCS_URL = "https://github.com/karasinski-mauro/Netflora"
-NETFLORA_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true"
-EMBRAPA_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true"
-JBS_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true"
+
+
+def _logo_data_uri(filename: str) -> str:
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "common",
+        "icons",
+        filename,
+    )
+    try:
+        with open(path, "rb") as handle:
+            encoded = base64.b64encode(handle.read()).decode("ascii")
+        return f"data:image/png;base64,{encoded}"
+    except Exception:
+        return ""
 
 
 def _norm_group_id(text: str) -> str:
@@ -111,9 +124,9 @@ def _detection_help_html(biome: str, category: str, docs_url: str = DOCS_URL) ->
     return (
         f'<div style="font-family:Segoe UI, Arial, sans-serif; line-height:1.45;">'
         f'<div style="text-align:center; margin-bottom:10px;">'
-        f'<img src="{NETFLORA_LOGO_URL}" width="180" style="margin:0 8px 12px 8px;">'
-        f'<img src="{EMBRAPA_LOGO_URL}" width="160" style="margin:0 8px 12px 8px;">'
-        f'<img src="{JBS_LOGO_URL}" width="160" style="margin:0 8px 12px 8px;"></div>'
+        f'<img src="{_logo_data_uri("Netflora.png")}" width="180" style="margin:0 8px 12px 8px;">'
+        f'<img src="{_logo_data_uri("Embrapa-Acre.png")}" width="160" style="margin:0 8px 12px 8px;">'
+        f'<img src="{_logo_data_uri("Fundo-JBS.png")}" width="160" style="margin:0 8px 12px 8px;"></div>'
         f"<h3>Netflora Detection</h3>"
         f"<p>{summary}</p>"
         f"<p><b>Inputs:</b> raster image, confidence threshold and optional report destination.<br>"
