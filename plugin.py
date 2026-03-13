@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import os
 import sys
 import tempfile
 import textwrap
 
-from qgis.PyQt.QtCore import QSettings, Qt, QUrl
-from qgis.PyQt.QtGui import QDesktopServices, QPixmap
+from qgis.PyQt.QtCore import QUrl
+from qgis.PyQt.QtGui import QDesktopServices
 from qgis.PyQt.QtWidgets import QMessageBox
 from qgis.core import QgsApplication, Qgis, QgsMessageLog
 
@@ -54,84 +53,6 @@ def _log(message: str):
         QgsMessageLog.logMessage(message, "Netflora", level=Qgis.Info)
     except Exception:
         pass
-
-
-def _plugin_root() -> str:
-    return os.path.dirname(os.path.abspath(__file__))
-
-
-def _metadata_value(key: str, default: str = "") -> str:
-    metadata_path = os.path.join(_plugin_root(), "metadata.txt")
-    try:
-        with open(metadata_path, "r", encoding="utf-8") as handle:
-            for line in handle:
-                if line.startswith(f"{key}="):
-                    return line.split("=", 1)[1].strip()
-    except Exception:
-        pass
-    return default
-
-
-def _icon_file_url(filename: str) -> str:
-    path = os.path.join(_plugin_root(), "common", "icons", filename)
-    return QUrl.fromLocalFile(path).toString()
-
-
-def _plugin_icon_pixmap():
-    path = os.path.join(_plugin_root(), "icon.png")
-    pixmap = QPixmap(path)
-    return pixmap if not pixmap.isNull() else None
-
-
-def _build_welcome_html() -> str:
-    return textwrap.dedent(
-        f"""
-        <div style="font-family:Segoe UI, Arial, sans-serif; line-height:1.5; min-width:560px;">
-          <div style="text-align:center; margin-bottom:16px;">
-            <img src="{_icon_file_url('Netflora.png')}" width="140" style="margin:0 8px;">
-            <img src="{_icon_file_url('Embrapa-Acre.png')}" width="140" style="margin:0 8px;">
-            <img src="{_icon_file_url('Fundo-JBS.png')}" width="140" style="margin:0 8px;">
-          </div>
-          <h2 style="margin-bottom:8px;">Netflora</h2>
-          <p>
-            The Netflora Project involves the application of geotechnologies in forest automation
-            and carbon stock mapping in native forest areas in Western Amazonia. It is an initiative
-            developed by Embrapa Acre with sponsorship from the JBS Fund for the Amazon.
-          </p>
-          <p>
-            Here we focus on the "Forest Inventory using drones" component. Drones and artificial
-            intelligence are used to automate forest inventory stages for identifying strategic species.
-            More than 50,000 hectares of forest areas have already been mapped to compose the Netflora dataset.
-          </p>
-          <p>
-            <b>Author:</b> Mauro Alessandro Karasinski<br>
-            <b>Institution:</b> Embrapa Acre<br>
-            <b>Page:</b> <a href="https://www.embrapa.br/acre/netflora">https://www.embrapa.br/acre/netflora</a><br>
-            <b>Support:</b> <a href="https://fundojbsamazonia.org/">https://fundojbsamazonia.org/</a>
-          </p>
-        </div>
-        """
-    ).strip()
-
-
-def show_welcome_message_once():
-    version = _metadata_value("version", "unknown").replace(".", "_")
-    settings = QSettings()
-    key = f"netflora/welcome_shown_{version}"
-    if settings.value(key, False, type=bool):
-        return
-
-    box = QMessageBox()
-    box.setWindowTitle("Welcome to Netflora")
-    pixmap = _plugin_icon_pixmap()
-    if pixmap is not None:
-        box.setIconPixmap(pixmap.scaledToWidth(72, Qt.SmoothTransformation))
-    box.setTextFormat(Qt.RichText)
-    box.setText(_build_welcome_html())
-    box.setStandardButtons(QMessageBox.Ok)
-    box.exec()
-
-    settings.setValue(key, True)
 
 
 def _build_help_html(missing_pkg: str = "onnxruntime"):
@@ -251,8 +172,6 @@ class NetfloraPlugin:
         except Exception as exc:
             QMessageBox.critical(None, "Netflora", f"Failed to register provider:\n{exc}")
             return
-
-        show_welcome_message_once()
 
         if missing:
             _log(f"Dependency missing: {missing}")

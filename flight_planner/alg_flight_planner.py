@@ -5,6 +5,8 @@ import os
 from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsProcessingAlgorithm, QgsApplication
 
+DOCS_URL = "https://github.com/karasinski-mauro/Netflora"
+
 def _plugin_root():
     here = os.path.dirname(os.path.abspath(__file__))  # .../flight_planner
     cur = here
@@ -17,6 +19,11 @@ def _plugin_root():
 def _flight_icon_png():
     p = os.path.join(_plugin_root(), "common", "icons", "flight.png")
     return p if os.path.exists(p) else None
+
+
+def _netflora_logo_url():
+    p = os.path.join(_plugin_root(), "common", "icons", "Netflora.png")
+    return f"file:///{p.replace(os.sep, '/')}"
 
 
 
@@ -139,6 +146,21 @@ class NetfloraFlightPlanner(QgsProcessingAlgorithm):
     def shortHelpString(self):
         return ("Lawn-mower orientado por linha (∥/⟂), recorte por AOI, viradas ortogonais (chanfrado), "
                 f"WPs ~{int(self.ENLACE_DIST_METERS)} m; CSV Litchi + camadas Linhas/Pontos.")
+
+    def shortHelpString(self):
+        return (
+            f'<div style="font-family:Segoe UI, Arial, sans-serif; line-height:1.45;">'
+            f'<div style="text-align:center; margin-bottom:10px;">'
+            f'<img src="{_netflora_logo_url()}" width="120"></div>'
+            f"<h3>Netflora Flight Planner</h3>"
+            f"<p>General flight-planning tool for drone missions over mapped areas. "
+            f"It generates oriented lawn-mower routes, mission CSV files for Litchi and "
+            f"support layers with lines and waypoints for field operations.</p>"
+            f"<p><b>Inputs:</b> AOI polygon, orientation, launch point and drone settings.<br>"
+            f"<b>Outputs:</b> mission CSV files, paths, waypoints and orientation preview layers.</p>"
+            f'<p><a href="{DOCS_URL}">Complete documentation / Documentacao completa</a></p>'
+            f"</div>"
+        )
 
     @staticmethod
     def _rot_to_local(x, y, cx, cy, cos_t, sin_t):

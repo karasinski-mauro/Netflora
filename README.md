@@ -1,12 +1,6 @@
-# Netflora – QGIS Plugin for Automatic Tree Detection
+# Netflora - QGIS Plugin for Forest Inventory with Drones
 
 <img src="https://github.com/NetFlora/Netflora/blob/main/inference/images/detection.gif" alt="Netflora Detection Demo" width="1000"/>
-
-**Read this in other languages**: [Português](README.pt.md), [Español](README.es.md)
-
-<a href="https://colab.research.google.com/drive/16nydPteUlpXo1tcIC0DWrQr05Z3m-npU?usp=sharing">
-<img src="https://colab.research.google.com/assets/colab-badge.svg">
-</a>
 
 ---
 
@@ -16,9 +10,9 @@ The **Netflora Project** involves the application of geotechnologies, remote sen
 
 This initiative is developed by **Embrapa Acre** with sponsorship from the **JBS Fund for the Amazon**.
 
-Within the project, drones and artificial intelligence are used to automate stages of the forest inventory, enabling the identification of strategic species and improving the efficiency of environmental monitoring.
+Within the project, drones and artificial intelligence are used to automate stages of forest inventory, enabling the identification of strategic species and improving the efficiency of environmental monitoring.
 
-More than **50,000 hectares of forest areas** have already been mapped with the objective of building a dataset to support the development of automated forest inventory methods.
+More than **50,000 hectares** of forest areas have already been mapped with the objective of building the Netflora dataset and supporting automated forest inventory methods.
 
 ---
 
@@ -36,70 +30,146 @@ More than **50,000 hectares of forest areas** have already been mapped with the 
 
 # Netflora QGIS Plugin
 
-The **Netflora QGIS Plugin** allows users to detect trees and vegetation features automatically from georeferenced orthomosaics using deep learning models based on the **YOLO architecture**.
+The **Netflora QGIS Plugin** integrates detection and flight-planning tools directly into the **QGIS Processing Framework**.
 
-The plugin integrates AI-based detection directly into the **QGIS Processing Framework**, allowing users to perform automated detection workflows within a GIS environment.
+It was designed to support forest inventory workflows using drone imagery, georeferenced orthomosaics and AI-based models for strategic species and vegetation-feature detection.
+
+The plugin currently combines:
+
+- biome-specific detection algorithms
+- flight planning for drone missions
+- optional PDF reporting
+- on-demand model download from GitHub release assets
 
 ---
 
 # Main Features
 
-• Automatic tree detection using YOLO deep learning models  
-• Processing of large orthomosaics using **sliding window inference**  
-• Support for **ONNX and PyTorch models**  
-• Execution using **CPU or GPU**  
-• Removal of duplicate detections using **Non-Maximum Suppression (NMS)**  
-• Export of **bounding boxes and centroids as georeferenced vector layers**  
-• Automatic **HTML report generation** with detection statistics  
-• Integration with **QGIS Processing tools**
+- Automatic detection of forest species and vegetation targets using AI models
+- Processing of large orthomosaics using tiled inference
+- Support for ONNX-based inference with CPU or GPU runtimes
+- Duplicate-removal and filtering of detections
+- Export of georeferenced polygon layers with confidence and class attributes
+- Optional PDF report generation
+- Flight planner for Litchi-compatible drone missions
+- Integration with QGIS Processing tools
 
 ---
 
 # How the Detection Works
 
-The detection workflow follows these steps:
+The detection workflow follows these general steps:
 
-1. The orthomosaic is divided into image **tiles**.
-2. Each tile is analyzed using a YOLO detection model.
-3. Predictions from all tiles are merged.
-4. Duplicate detections between overlapping tiles are removed using **Non-Maximum Suppression (NMS)**.
-5. Final detections are converted into **georeferenced vector layers**.
+1. The orthomosaic is divided into image tiles.
+2. Each tile is processed by a category-specific model.
+3. Predictions are merged across the full raster.
+4. Duplicate detections are filtered.
+5. Final detections are exported as georeferenced vector layers.
 
-This approach allows the processing of very large orthomosaics without loading the entire raster into memory.
+This approach allows the processing of large rasters without loading the entire image into memory at once.
+
+---
+
+# Available Tools
+
+## Detection Algorithms
+
+Netflora includes tools for multiple biomes and categories, such as:
+
+- **Amazonia**: acai solteiro, acai touceira, castanheira, ecologico, geral, invasora, madeireiros, nao madeireiros and palmeiras
+- **Cerrado**: carvao, nao madeireiros and palmeiras
+- **Mata Atlantica**: araucaria, madeireiro, nao madeireiro and palmeiras
+- **Caatinga**: palmeiras
+- **Pantanal**: palmeiras
+- **Pampa**: palmeiras
+- **Custom**: execution with user-provided model weights
+
+Each algorithm now includes a short in-tool description inside QGIS, together with the Netflora logo and a link to the complete documentation repository.
+
+## Flight Planner
+
+The plugin also includes a flight planner for drone mission preparation, with:
+
+- AOI-based route generation
+- orientation by line layer or two user-defined points
+- overlap, altitude and speed settings
+- CSV export for Litchi
+- waypoint and path layers for visualization in QGIS
 
 ---
 
 # Inputs
 
-Netflora accepts georeferenced raster imagery such as:
+Netflora works with georeferenced raster imagery such as:
 
-• UAV orthomosaics  
-• Aerial imagery  
-• High-resolution satellite imagery  
+- UAV orthomosaics
+- aerial imagery
+- high-resolution raster imagery
 
-Supported formats include:
-
-.tif  
-.tiff  
+The flight planner also uses polygon layers to define the mapping area.
 
 ---
 
 # Outputs
 
-After processing, the plugin generates:
+Depending on the selected tool, the plugin can generate:
 
-• Bounding box vector layer  
-• Centroid vector layer  
-• Attribute table with predicted class and confidence  
-• CSV summary files  
-• HTML report with detection statistics
+- polygon detection layers
+- class and confidence attributes
+- mission paths and waypoint layers
+- CSV mission files
+- optional PDF reports
 
-Supported formats include:
+---
 
-• Shapefile (.shp)  
-• GeoPackage (.gpkg)  
-• CSV  
-• HTML report  
+# Installation
+
+## Install via ZIP in QGIS
+
+1. Download the Netflora plugin ZIP package.
+2. Open QGIS.
+3. Go to:
+
+`Plugins > Manage and Install Plugins`
+
+4. Click **Install from ZIP**.
+5. Select the Netflora ZIP file.
+6. Restart QGIS if required.
+
+## Python Dependencies
+
+Depending on the environment, the plugin may require external Python packages in the QGIS Python installation.
+
+Minimum setup:
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install numpy onnxruntime matplotlib pandas
+```
+
+Optional GPU runtimes:
+
+```bash
+python -m pip install onnxruntime-gpu
+python -m pip install onnxruntime-directml
+python -m pip install onnxruntime-openvino
+```
+
+On Windows, these commands are usually run from the **OSGeo4W Shell**.
+
+---
+
+# Model Weights
+
+Model weights are **not bundled** inside the plugin ZIP.
+
+When a detection algorithm is executed for the first time, the plugin can automatically download the required `.onnx` model from the configured GitHub release assets:
+
+https://github.com/karasinski-mauro/Netflora/releases/tag/v1.0
+
+If the asset for a given algorithm has not been published yet, the plugin informs the user that the algorithm is still under construction.
+
+Optional `sha256` validation can also be configured for each asset.
 
 ---
 
@@ -117,80 +187,44 @@ Supported formats include:
 
 ---
 
-# Installation
+# Documentation and Links
 
-## Install via ZIP (recommended)
-
-1. Download the Netflora plugin `.zip`
-2. Open QGIS
-3. Navigate to:
-
-Plugins → Manage and Install Plugins
-
-4. Click **Install from ZIP**
-5. Select the Netflora ZIP file
-6. Restart QGIS if required
-
----
-
-# Python Dependencies
-
-Depending on the inference mode, the following libraries may be required:
-
-numpy  
-onnxruntime  
-torch  
-ultralytics  
-
-### Installing Dependencies (Windows)
-
-Open **OSGeo4W Shell** and run:
-
-python -m pip install --upgrade pip  
-python -m pip install numpy onnxruntime  
-
-For GPU acceleration:
-
-python -m pip install onnxruntime-gpu  
-
----
-
-# Running Detection via Python
-
-Example command:
-
-python detect.py --device 0 --weights model_weights.pt --img 1536
-
----
-
-# Visualizing Detection Results
-
-python results.py --graphics --conf 0.25
-
----
-
-# Website
+## Official Project Page
 
 https://www.embrapa.br/acre/netflora
 
----
+## Repository and Full Documentation
 
-# Useful Links
+https://github.com/karasinski-mauro/Netflora
 
-Orthophoto example download  
+## Example Data
+
 https://drive.google.com/drive/folders/1OcRel7fJHALwm9ZAdU3rSlFwV_4iaZnp?usp=sharing
 
-EAD Course  
+## Course
+
 https://ava.sede.embrapa.br/enrol/index.php?id=470
 
-FAQ  
+## FAQ
+
 https://www.embrapa.br/web/portal/acre/tecnologias/netflora/perguntas-e-respostas
 
-Embrapa Acre  
+## Embrapa Acre
+
 https://www.embrapa.br/acre/
 
-JBS Fund for the Amazon  
+## JBS Fund for the Amazon
+
 https://fundojbsamazonia.org/
+
+---
+
+# Author and Institution
+
+**Author:** Mauro Alessandro Karasinski  
+**Institution:** Embrapa Acre  
+**Project page:** https://www.embrapa.br/acre/netflora  
+**Support:** https://fundojbsamazonia.org/
 
 ---
 
@@ -198,25 +232,10 @@ https://fundojbsamazonia.org/
 
 Distributed under the **GNU General Public License v3.0 (GPL-3.0)**.
 
-See LICENSE for more information.
-
----
-
-# Citation
-
-If you use Netflora in academic research, please cite:
-
-
+See `LICENSE` for more information.
 
 ---
 
 # Acknowledgements
 
-We acknowledge the contributions of the open-source computer vision community.
-
-https://github.com/AlexeyAB/darknet  
-https://github.com/WongKinYiu/yolov7  
-
----
-
-We appreciate your interest in the Netflora project!
+We acknowledge the support of the open-source geospatial and computer vision communities, including the broader ecosystems around QGIS, ONNX Runtime and YOLO-based workflows.

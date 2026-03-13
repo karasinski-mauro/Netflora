@@ -21,6 +21,8 @@ from ..common.model_manager import ensure_model_path
 from ..common.preprocessing import run_preprocessing
 from ..common.inference import run_detection
 
+DOCS_URL = "https://github.com/karasinski-mauro/Netflora"
+
 
 def _norm_group_id(text: str) -> str:
     s = unicodedata.normalize('NFKD', text)
@@ -97,6 +99,35 @@ def _apply_detection_style(vlayer, prefer_field: str = "common_name"):
     vlayer.triggerRepaint()
 
 
+def _logo_file_url() -> str:
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "common",
+        "icons",
+        "Netflora.png",
+    )
+    return f"file:///{path.replace(os.sep, '/')}"
+
+
+def _detection_help_html(biome: str, category: str, docs_url: str = DOCS_URL) -> str:
+    summary = (
+        f"Netflora detection tool for <b>{category}</b> in the <b>{biome}</b> biome. "
+        "Use this algorithm to analyze drone imagery with AI-assisted inference and generate "
+        "polygon detections with confidence values and optional PDF reporting."
+    )
+    return (
+        f'<div style="font-family:Segoe UI, Arial, sans-serif; line-height:1.45;">'
+        f'<div style="text-align:center; margin-bottom:10px;">'
+        f'<img src="{_logo_file_url()}" width="120"></div>'
+        f"<h3>Netflora Detection</h3>"
+        f"<p>{summary}</p>"
+        f"<p><b>Inputs:</b> raster image, confidence threshold and optional report destination.<br>"
+        f"<b>Outputs:</b> polygon layer with detections, class attributes and optional PDF summary.</p>"
+        f'<p><a href="{docs_url}">Complete documentation / Documentacao completa</a></p>'
+        f"</div>"
+    )
+
+
 class BaseDetectionAlgorithm(QgsProcessingAlgorithm):
     P_RASTER = "INPUT_RASTER"
     P_CONF = "CONF_THRESHOLD"
@@ -122,11 +153,7 @@ class BaseDetectionAlgorithm(QgsProcessingAlgorithm):
         return f"netflora_detection_{_norm_group_id(self.BIOME)}"
 
     def shortHelpString(self):
-        return (
-            "Runs category-specific detection over a raster using shared pre-processing.\n"
-            "Inputs: Raster; Params: Confidence threshold.\n"
-            "Outputs: Polygon layer with detection boxes. Optional PDF report."
-        )
+        return _detection_help_html(self.BIOME, self.CATEGORY)
 
     def initAlgorithm(self, config=None):
         self.addParameter(QgsProcessingParameterRasterLayer(self.P_RASTER, "Raster (input)"))
