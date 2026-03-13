@@ -18,11 +18,11 @@ More than **50,000 hectares** of forest areas have already been mapped with the 
 
 <div align="center">
 
-<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true" width="200">
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true" width="260">
 
-<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true" width="200">
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true" width="220">
 
-<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true" width="200">
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true" width="220">
 
 </div>
 

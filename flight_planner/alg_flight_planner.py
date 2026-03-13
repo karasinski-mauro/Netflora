@@ -6,6 +6,9 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.core import QgsProcessingAlgorithm, QgsApplication
 
 DOCS_URL = "https://github.com/karasinski-mauro/Netflora"
+NETFLORA_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true"
+EMBRAPA_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true"
+JBS_LOGO_URL = "https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true"
 
 def _plugin_root():
     here = os.path.dirname(os.path.abspath(__file__))  # .../flight_planner
@@ -19,14 +22,6 @@ def _plugin_root():
 def _flight_icon_png():
     p = os.path.join(_plugin_root(), "common", "icons", "flight.png")
     return p if os.path.exists(p) else None
-
-
-def _netflora_logo_url():
-    p = os.path.join(_plugin_root(), "common", "icons", "Netflora.png")
-    return f"file:///{p.replace(os.sep, '/')}"
-
-
-
 
 
 """
@@ -151,7 +146,9 @@ class NetfloraFlightPlanner(QgsProcessingAlgorithm):
         return (
             f'<div style="font-family:Segoe UI, Arial, sans-serif; line-height:1.45;">'
             f'<div style="text-align:center; margin-bottom:10px;">'
-            f'<img src="{_netflora_logo_url()}" width="120"></div>'
+            f'<img src="{NETFLORA_LOGO_URL}" width="180" style="margin:0 8px 12px 8px;">'
+            f'<img src="{EMBRAPA_LOGO_URL}" width="160" style="margin:0 8px 12px 8px;">'
+            f'<img src="{JBS_LOGO_URL}" width="160" style="margin:0 8px 12px 8px;"></div>'
             f"<h3>Netflora Flight Planner</h3>"
             f"<p>General flight-planning tool for drone missions over mapped areas. "
             f"It generates oriented lawn-mower routes, mission CSV files for Litchi and "
