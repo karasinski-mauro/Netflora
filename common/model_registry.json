@@ -1,0 +1,100 @@
+{
+  "defaults": {},
+  "models": {
+    "amazonia_acai_solteiro": {
+      "asset_name": "amazonia_acai_solteiro.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_acai_solteiro.onnx",
+      "sha256": ""
+    },
+    "amazonia_acai_touceira": {
+      "asset_name": "amazonia_acai_touceira.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_acai_touceira.onnx",
+      "sha256": ""
+    },
+    "amazonia_castanheira": {
+      "asset_name": "amazonia_castanheira.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_castanheira.onnx",
+      "sha256": ""
+    },
+    "amazonia_ecologico": {
+      "asset_name": "amazonia_ecologico.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_ecologico.onnx",
+      "sha256": ""
+    },
+    "amazonia_geral": {
+      "asset_name": "amazonia_geral.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_geral.onnx",
+      "sha256": ""
+    },
+    "amazonia_invasora": {
+      "asset_name": "amazonia_invasora.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_invasora.onnx",
+      "sha256": ""
+    },
+    "amazonia_madeireiros": {
+      "asset_name": "amazonia_madeireiros.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_madeireiros.onnx",
+      "sha256": ""
+    },
+    "amazonia_nao_madeireiros": {
+      "asset_name": "amazonia_nao_madeireiros.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_nao_madeireiros.onnx",
+      "sha256": ""
+    },
+    "amazonia_palmeiras": {
+      "asset_name": "amazonia_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/amazonia_palmeiras.onnx",
+      "sha256": ""
+    },
+    "caatinga_palmeiras": {
+      "asset_name": "caatinga_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/caatinga_palmeiras.onnx",
+      "sha256": ""
+    },
+    "cerrado_carvao": {
+      "asset_name": "cerrado_carvao.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/cerrado_carvao.onnx",
+      "sha256": ""
+    },
+    "cerrado_nao_madeireiros": {
+      "asset_name": "cerrado_nao_madeireiros.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/cerrado_nao_madeireiros.onnx",
+      "sha256": ""
+    },
+    "cerrado_palmeiras": {
+      "asset_name": "cerrado_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/cerrado_palmeiras.onnx",
+      "sha256": ""
+    },
+    "mata_atlantica_araucaria": {
+      "asset_name": "mata_atlantica_araucaria.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/mata_atlantica_araucaria.onnx",
+      "sha256": ""
+    },
+    "mata_atlantica_madeireiro": {
+      "asset_name": "mata_atlantica_madeireiro.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/mata_atlantica_madeireiro.onnx",
+      "sha256": ""
+    },
+    "mata_atlantica_nao_madeireiro": {
+      "asset_name": "mata_atlantica_nao_madeireiro.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/mata_atlantica_nao_madeireiro.onnx",
+      "sha256": ""
+    },
+    "mata_atlantica_palmeiras": {
+      "asset_name": "mata_atlantica_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/mata_atlantica_palmeiras.onnx",
+      "sha256": ""
+    },
+    "pampa_palmeiras": {
+      "asset_name": "pampa_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/pampa_palmeiras.onnx",
+      "sha256": ""
+    },
+    "pantanal_palmeiras": {
+      "asset_name": "pantanal_palmeiras.onnx",
+      "url": "https://github.com/karasinski-mauro/Netflora/releases/download/v1.0/pantanal_palmeiras.onnx",
+      "sha256": ""
+    }
+  }
+}

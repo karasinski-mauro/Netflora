@@ -1,0 +1,24 @@
+[general]
+name=Netflora
+qgisMinimumVersion=3.22
+qgisMaximumVersion=3.99
+description=Netflora for flight planning and forest-species detection in QGIS Processing.
+version=0.1.0
+author=Mauro Alessandro Karasinski
+email=mkalehandro@gmail.com
+license=GPL-3.0
+homepage=https://www.embrapa.br/acre/netflora
+repository=https://github.com/Netflora/Netflora-plugin
+tracker=https://github.com/Netflora/Netflora-plugin/issues
+category=Analysis
+icon=icon.png
+experimental=true
+deprecated=false
+hasProcessingProvider=true
+tags=processing,detection,yolo,inference,forest,biome,drone,remote sensing,flight planner
+
+about=Netflora provides flight-planning and biome-specific detection tools for QGIS.
+ The plugin uses external ONNX-based models to detect forest species in drone imagery.
+ Model weights are not bundled in the plugin package.
+ When a model is used for the first time, Netflora can ask the user for permission to download the matching release asset and cache it in the local QGIS profile.
+ Python runtimes such as onnxruntime are also external dependencies and must be installed in the QGIS Python environment.
