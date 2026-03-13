@@ -1,69 +1,222 @@
-# Netflora - Plugin
-Plugin QGIS para detecção de espécies florestais em ortomosaicos usando YOLO (PyTorch/ONNX), gerando camadas vetoriais (.shp) e relatório.
+# Netflora – QGIS Plugin for Automatic Tree Detection
+
+<img src="https://github.com/NetFlora/Netflora/blob/main/inference/images/detection.gif" alt="Netflora Detection Demo" width="1000"/>
+
+**Read this in other languages**: [Português](README.pt.md), [Español](README.es.md)
+
+<a href="https://colab.research.google.com/drive/16nydPteUlpXo1tcIC0DWrQr05Z3m-npU?usp=sharing">
+<img src="https://colab.research.google.com/assets/colab-badge.svg">
+</a>
 
 ---
 
-<img src="https://github.com/NetFlora/Netflora/blob/main/inference/images/detection.gif" alt="Demonstração do Projeto" width="1000"/>
+# Netflora Project
 
-## Visão geral
-O **Netflora** automatiza a etapa de inventário florestal a partir de ortomosaicos (GeoTIFF) e modelos YOLO. O plugin:
-- executa detecção por janelas (tiles) com sobreposição configurável;
-- aplica supressão de duplicidades (NMS) para remover detecções repetidas entre tiles;
-- exporta camadas vetoriais (polígonos/centroides) e tabelas de atributos;
-- gera **relatório HTML** com métricas e gráficos.
+The **Netflora Project** involves the application of geotechnologies, remote sensing and artificial intelligence to support forest automation and carbon stock mapping in native forest areas of the Western Amazon.
 
-> **Entrada:** ortomosaico georreferenciado (ex.: `.tif/.tiff`)  
-> **Saída:** camadas vetoriais (Shapefile/GeoPackage), CSVs e relatório
+This initiative is developed by **Embrapa Acre** with sponsorship from the **JBS Fund for the Amazon**.
 
-<div style="display: flex;">
+Within the project, drones and artificial intelligence are used to automate stages of the forest inventory, enabling the identification of strategic species and improving the efficiency of environmental monitoring.
 
- <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true" width="200" alt="Netflora Logo">
+More than **50,000 hectares of forest areas** have already been mapped with the objective of building a dataset to support the development of automated forest inventory methods.
 
-  <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true" width="200" alt="Embrapa Acre Logo">
-    
-   <img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true" width="200" alt="JBS Fund Logo">
+---
+
+<div align="center">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Netflora.png?raw=true" width="200">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Embrapa-Acre.png?raw=true" width="200">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/logo/Fundo-JBS.png?raw=true" width="200">
 
 </div>
 
 ---
 
-## Requisitos
-- **QGIS 3.x** (recomendado: 3.28+)
-- Windows / Linux / macOS  
-- Modelos YOLO em **ONNX** (`.onnx`) ou pesos PyTorch (`.pt`) (dependendo do modo habilitado no plugin)
+# Netflora QGIS Plugin
 
-> Dica: para reprodutibilidade, mantenha os modelos em `common/weights/` (ou no diretório indicado nas configurações do plugin).
+The **Netflora QGIS Plugin** allows users to detect trees and vegetation features automatically from georeferenced orthomosaics using deep learning models based on the **YOLO architecture**.
 
-> ## Dependências Python 
+The plugin integrates AI-based detection directly into the **QGIS Processing Framework**, allowing users to perform automated detection workflows within a GIS environment.
 
-O Netflora usa bibliotecas Python para inferência e processamento. Dependendo do modo (ONNX ou PyTorch), você pode precisar instalar:
-
-- `numpy` (obrigatório)
-- `onnxruntime` (para modelos `.onnx`)  
-  *(ou `onnxruntime-gpu` se você for usar GPU e tiver CUDA compatível)*
-- `torch` e `ultralytics` (se usar modo PyTorch / `.pt`)
-- Outras dependências podem ser necessárias conforme o fluxo (ex.: leitura de raster, geração de relatório).
-
-### Instalação via OSGeo4W Shell (Windows)
-Abra o **OSGeo4W Shell** do QGIS e rode:
-
-```bash
-python -m pip install --upgrade pip
-python -m pip install --upgrade numpy onnxruntime
-```
 ---
-## Instalação
 
-### Opção A — Instalar via ZIP (recomendado)
-1. Baixe o repositório como `.zip` (ou baixe o `Netflora.zip` da aba *Releases*).
-2. No QGIS, vá em **Complementos → Gerenciar e Instalar Complementos…**
-3. Clique em **Instalar a partir de ZIP**
-4. Selecione o arquivo `.zip` do Netflora e confirme.
-5. Reinicie o QGIS, se solicitado.
+# Main Features
 
-### Opção B — Instalar como plugin local (desenvolvimento)
-1. Clone o repositório:
+• Automatic tree detection using YOLO deep learning models  
+• Processing of large orthomosaics using **sliding window inference**  
+• Support for **ONNX and PyTorch models**  
+• Execution using **CPU or GPU**  
+• Removal of duplicate detections using **Non-Maximum Suppression (NMS)**  
+• Export of **bounding boxes and centroids as georeferenced vector layers**  
+• Automatic **HTML report generation** with detection statistics  
+• Integration with **QGIS Processing tools**
 
-   ```bash
-   git clone https://github.com/karasinski-mauro/Netflora.git
-   ```
+---
+
+# How the Detection Works
+
+The detection workflow follows these steps:
+
+1. The orthomosaic is divided into image **tiles**.
+2. Each tile is analyzed using a YOLO detection model.
+3. Predictions from all tiles are merged.
+4. Duplicate detections between overlapping tiles are removed using **Non-Maximum Suppression (NMS)**.
+5. Final detections are converted into **georeferenced vector layers**.
+
+This approach allows the processing of very large orthomosaics without loading the entire raster into memory.
+
+---
+
+# Inputs
+
+Netflora accepts georeferenced raster imagery such as:
+
+• UAV orthomosaics  
+• Aerial imagery  
+• High-resolution satellite imagery  
+
+Supported formats include:
+
+.tif  
+.tiff  
+
+---
+
+# Outputs
+
+After processing, the plugin generates:
+
+• Bounding box vector layer  
+• Centroid vector layer  
+• Attribute table with predicted class and confidence  
+• CSV summary files  
+• HTML report with detection statistics
+
+Supported formats include:
+
+• Shapefile (.shp)  
+• GeoPackage (.gpkg)  
+• CSV  
+• HTML report  
+
+---
+
+# Examples of Detection
+
+<div align="center">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/inference/images/Acai.jpg?raw=true" width="230">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/inference/images/Palmeiras.jpg?raw=true" width="250">
+
+<img src="https://github.com/NetFlora/NetFlora/blob/main/inference/images/PFMNs.jpg?raw=true" width="230">
+
+</div>
+
+---
+
+# Installation
+
+## Install via ZIP (recommended)
+
+1. Download the Netflora plugin `.zip`
+2. Open QGIS
+3. Navigate to:
+
+Plugins → Manage and Install Plugins
+
+4. Click **Install from ZIP**
+5. Select the Netflora ZIP file
+6. Restart QGIS if required
+
+---
+
+# Python Dependencies
+
+Depending on the inference mode, the following libraries may be required:
+
+numpy  
+onnxruntime  
+torch  
+ultralytics  
+
+### Installing Dependencies (Windows)
+
+Open **OSGeo4W Shell** and run:
+
+python -m pip install --upgrade pip  
+python -m pip install numpy onnxruntime  
+
+For GPU acceleration:
+
+python -m pip install onnxruntime-gpu  
+
+---
+
+# Running Detection via Python
+
+Example command:
+
+python detect.py --device 0 --weights model_weights.pt --img 1536
+
+---
+
+# Visualizing Detection Results
+
+python results.py --graphics --conf 0.25
+
+---
+
+# Website
+
+https://www.embrapa.br/acre/netflora
+
+---
+
+# Useful Links
+
+Orthophoto example download  
+https://drive.google.com/drive/folders/1OcRel7fJHALwm9ZAdU3rSlFwV_4iaZnp?usp=sharing
+
+EAD Course  
+https://ava.sede.embrapa.br/enrol/index.php?id=470
+
+FAQ  
+https://www.embrapa.br/web/portal/acre/tecnologias/netflora/perguntas-e-respostas
+
+Embrapa Acre  
+https://www.embrapa.br/acre/
+
+JBS Fund for the Amazon  
+https://fundojbsamazonia.org/
+
+---
+
+# License
+
+Distributed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+See LICENSE for more information.
+
+---
+
+# Citation
+
+If you use Netflora in academic research, please cite:
+
+
+
+---
+
+# Acknowledgements
+
+We acknowledge the contributions of the open-source computer vision community.
+
+https://github.com/AlexeyAB/darknet  
+https://github.com/WongKinYiu/yolov7  
+
+---
+
+We appreciate your interest in the Netflora project!
