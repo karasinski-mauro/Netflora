@@ -206,8 +206,7 @@ See LICENSE for more information.
 
 If you use Netflora in academic research, please cite:
 
-Karasinski, M. A.  
-Netflora – Deep Learning for Automated Forest Inventory using UAV Imagery.
+
 
 ---
 
