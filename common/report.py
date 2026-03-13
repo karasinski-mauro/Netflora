@@ -3,6 +3,7 @@ import os
 import io
 import tempfile
 import math
+from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -125,17 +126,26 @@ def _fmt_int(x):
     except Exception:
         return str(x)
 
+def _validated_remote_image_url(src_path_or_url):
+    parsed = urlparse(str(src_path_or_url).strip())
+    if parsed.scheme not in {"http", "https"}:
+        raise ValueError("Only http and https image URLs are supported.")
+    if not parsed.netloc:
+        raise ValueError("Image URL must include a network location.")
+    return parsed.geturl()
+
 def _try_fetch_image(src_path_or_url, desired_width_cm=12):
     try:
         if isinstance(src_path_or_url, (list, tuple)):
             src_path_or_url = src_path_or_url[0]
         if str(src_path_or_url).lower().startswith(("http://", "https://")):
             import urllib.request
+            safe_url = _validated_remote_image_url(src_path_or_url)
             tmpf = os.path.join(
                 tempfile.gettempdir(),
-                os.path.basename(str(src_path_or_url)).split("?")[0] or "netflora_img.jpg"
+                os.path.basename(str(safe_url)).split("?")[0] or "netflora_img.jpg"
             )
-            urllib.request.urlretrieve(src_path_or_url, tmpf)
+            urllib.request.urlretrieve(safe_url, tmpf)  # nosec B310 - scheme and netloc are validated above
             img_path = tmpf
         else:
             img_path = src_path_or_url
