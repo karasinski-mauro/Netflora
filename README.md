@@ -221,10 +221,11 @@ https://fundojbsamazonia.org/
 
 # Author and Institution
 
-**Author:** Mauro Alessandro Karasinski  
-**Institution:** Embrapa Acre  
-**Project page:** https://www.embrapa.br/acre/netflora  
-**Support:** https://fundojbsamazonia.org/
+**Authors:** Mauro Alessandro Karasinski \n
+**Project Coordinator:** Evandro Orfanó Figueiredo \n
+**Institution:** Embrapa Acre  \n
+**Project page:** https://www.embrapa.br/acre/netflora  \n
+**Support:** https://fundojbsamazonia.org/\n
 
 ---
 
