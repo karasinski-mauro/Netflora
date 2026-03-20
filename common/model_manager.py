@@ -3,15 +3,73 @@ import hashlib
 import json
 import os
 import shutil
+from threading import Lock
 from typing import Optional
 
-from qgis.PyQt.QtCore import QEventLoop, QFileInfo, QUrl
+from qgis.PyQt.QtCore import (
+    QEventLoop,
+    QFileInfo,
+    QMetaObject,
+    QObject,
+    QThread,
+    QUrl,
+    Qt,
+    pyqtSlot,
+)
 from qgis.PyQt.QtNetwork import QNetworkRequest
 from qgis.PyQt.QtWidgets import QApplication, QFileDialog, QMessageBox
 from qgis.core import QgsApplication, QgsNetworkAccessManager
 
 
 REGISTRY_FILE = "model_registry.json"
+_GUI_INVOKER = None
+_GUI_INVOKER_LOCK = Lock()
+
+
+class _GuiInvoker(QObject):
+    def __init__(self):
+        super().__init__()
+        self._func = None
+        self.result = None
+        self.error = None
+
+    @pyqtSlot()
+    def execute(self):
+        try:
+            self.result = self._func()
+            self.error = None
+        except Exception as exc:
+            self.result = None
+            self.error = exc
+
+
+def _get_gui_invoker():
+    global _GUI_INVOKER
+    if _GUI_INVOKER is None:
+        _GUI_INVOKER = _GuiInvoker()
+        app = QApplication.instance()
+        if app is not None:
+            _GUI_INVOKER.moveToThread(app.thread())
+    return _GUI_INVOKER
+
+
+def _run_in_gui_thread(func):
+    app = QApplication.instance()
+    if app is None:
+        return func()
+
+    if QThread.currentThread() == app.thread():
+        return func()
+
+    invoker = _get_gui_invoker()
+    with _GUI_INVOKER_LOCK:
+        invoker._func = func
+        invoker.result = None
+        invoker.error = None
+        QMetaObject.invokeMethod(invoker, "execute", Qt.BlockingQueuedConnection)
+        if invoker.error is not None:
+            raise invoker.error
+        return invoker.result
 
 
 def _log(feedback, message: str):
@@ -117,21 +175,24 @@ def _show_under_construction_message(alg_key: str, asset_name: str):
     if QApplication.instance() is None:
         return
 
-    parent = QApplication.activeWindow()
-    QMessageBox.information(
-        parent,
-        "Netflora - Algorithm under construction / Algoritmo em construcao",
-        (
-            f"The model for '{alg_key}' is not available yet.\n"
-            f"Expected release asset: {asset_name}\n\n"
-            "This algorithm is still under construction. "
-            "Please try again after the model is published.\n\n"
-            f"O modelo para '{alg_key}' ainda nao esta disponivel.\n"
-            f"Asset esperado no release: {asset_name}\n\n"
-            "Este algoritmo ainda esta em construcao. "
-            "Tente novamente depois que o modelo for publicado."
-        ),
-    )
+    def _show():
+        parent = QApplication.activeWindow()
+        QMessageBox.information(
+            parent,
+            "Netflora - Algorithm under construction / Algoritmo em construcao",
+            (
+                f"The model for '{alg_key}' is not available yet.\n"
+                f"Expected release asset: {asset_name}\n\n"
+                "This algorithm is still under construction. "
+                "Please try again after the model is published.\n\n"
+                f"O modelo para '{alg_key}' ainda nao esta disponivel.\n"
+                f"Asset esperado no release: {asset_name}\n\n"
+                "Este algoritmo ainda esta em construcao. "
+                "Tente novamente depois que o modelo for publicado."
+            ),
+        )
+
+    _run_in_gui_thread(_show)
 
 
 def _resolve_github_release_url(repo: str, release_tag: str, asset_name: str) -> str:
@@ -189,39 +250,45 @@ def _prompt_for_missing_model(asset_name: str, target_dir: str):
             f"Model '{asset_name}' is missing and no GUI is available to ask for download confirmation."
         )
 
-    parent = QApplication.activeWindow()
-    box = QMessageBox(parent)
-    box.setIcon(QMessageBox.Warning)
-    box.setWindowTitle("Netflora - Model weight required")
-    box.setText(f"The model '{asset_name}' is not installed.")
-    box.setInformativeText(
-        "Netflora can download it from the configured release assets "
-        f"and store it in:\n{target_dir}"
-    )
-    download_button = box.addButton("Download", QMessageBox.AcceptRole)
-    local_button = box.addButton("Use local file", QMessageBox.ActionRole)
-    cancel_button = box.addButton(QMessageBox.Cancel)
-    box.setDefaultButton(download_button)
-    box.exec()
+    def _prompt():
+        parent = QApplication.activeWindow()
+        box = QMessageBox(parent)
+        box.setIcon(QMessageBox.Warning)
+        box.setWindowTitle("Netflora - Model weight required")
+        box.setText(f"The model '{asset_name}' is not installed.")
+        box.setInformativeText(
+            "Netflora can download it from the configured release assets "
+            f"and store it in:\n{target_dir}"
+        )
+        download_button = box.addButton("Download", QMessageBox.AcceptRole)
+        local_button = box.addButton("Use local file", QMessageBox.ActionRole)
+        cancel_button = box.addButton(QMessageBox.Cancel)
+        box.setDefaultButton(download_button)
+        box.exec()
 
-    clicked = box.clickedButton()
-    if clicked == download_button:
-        return "download"
-    if clicked == local_button:
-        return "local"
-    if clicked == cancel_button:
+        clicked = box.clickedButton()
+        if clicked == download_button:
+            return "download"
+        if clicked == local_button:
+            return "local"
+        if clicked == cancel_button:
+            return "cancel"
         return "cancel"
-    return "cancel"
+
+    return _run_in_gui_thread(_prompt)
 
 
 def _copy_local_model(asset_name: str, target_dir: str):
-    parent = QApplication.activeWindow()
-    selected, _ = QFileDialog.getOpenFileName(
-        parent,
-        "Select model weight",
-        "",
-        "Model weights (*.onnx *.pt)",
-    )
+    def _select_file():
+        parent = QApplication.activeWindow()
+        return QFileDialog.getOpenFileName(
+            parent,
+            "Select model weight",
+            "",
+            "Model weights (*.onnx *.pt)",
+        )
+
+    selected, _ = _run_in_gui_thread(_select_file)
     if not selected:
         return None
 

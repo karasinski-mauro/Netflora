@@ -226,11 +226,11 @@ class BaseDetectionAlgorithm(QgsProcessingAlgorithm):
         conf_thr = self.parameterAsDouble(params, self.P_CONF, context)
         feedback.pushInfo(f"[Netflora] Detection: {self.BIOME} / {self.CATEGORY}")
 
-        raster_pp = run_preprocessing(raster, feedback)
-
         plugin_root = os.path.dirname(os.path.dirname(__file__))
         model_path = self._resolve_model_path(params, context, plugin_root, feedback)
         feedback.pushInfo(f"[Netflora] Using model weight: {model_path}")
+
+        raster_pp = run_preprocessing(raster, feedback)
 
         boxes = run_detection(raster_pp, model_path, conf_thr, feedback)
 
