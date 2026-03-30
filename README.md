@@ -221,8 +221,9 @@ https://fundojbsamazonia.org/
 
 # Author and Institution
 
-**Authors:** Mauro Alessandro Karasinski <br>
-**Project Coordinator:** Evandro Orfanó Figueiredo <br>
+**Authors:** 
+      Mauro Alessandro Karasinski (Consultor) <br>
+      Evandro Orfanó Figueiredo (Coorndenador)(Coor <br>
 **Institution:** Embrapa Acre <br>
 **Project page:** https://www.embrapa.br/acre/netflora <br>
 **Support:** https://fundojbsamazonia.org/
