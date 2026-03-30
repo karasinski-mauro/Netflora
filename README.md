@@ -231,9 +231,19 @@ https://fundojbsamazonia.org/
 
 # License
 
-Distributed under the **GNU General Public License v3.0 (GPL-3.0)**.
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+
+This software uses components from Ultralytics YOLO, which is also licensed under AGPL-3.0.
 
 See `LICENSE` for more information.
+
+
+## Third-Party Components
+
+This project uses YOLO models from Ultralytics:
+https://github.com/ultralytics/ultralytics
+
+Ultralytics YOLO is licensed under AGPL-3.0.
 
 ---
 
